@@ -11,6 +11,19 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'HomeController@index');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Courier::routes();
+
+Pickup::routes();
+
+
+Route::get('suggest/shipments', "Api\SuggestController@shipments");
+
+
+Route::get('suggest/couriers', "Api\SuggestController@couriers");
+
