@@ -149,8 +149,6 @@ class Courier extends Model implements Accountable
 
     public static function routes()
     {
-        Route::resource('couriers', "CouriersController");
-        Route::get('couriers/{courier}/shipments', "CouriersController@inventory")->name("couriers.inventory");
     }
 
     public function identifiableName()
