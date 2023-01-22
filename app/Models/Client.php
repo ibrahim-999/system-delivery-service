@@ -3,13 +3,6 @@
 namespace App\Models;
 
 
-use App\Interfaces\Accountable;
-use App\Interfaces\CanHaveShipment;
-use App\Notifications\ClientCreated;
-use App\Traits\ClientAccounting;
-use App\Traits\StatisticsTrait;
-use App\Traits\HasAttachmentsTrait;
-use App\Traits\PrepareAccounting;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -30,7 +23,6 @@ use Illuminate\Support\Facades\Route;
  * @property string|array secondary_emails
  *
  * @property User user
- * @property Zone zone
  *
  * @property string category
  * @property string sector
@@ -65,7 +57,6 @@ use Illuminate\Support\Facades\Route;
  *
  * @property Collection attachments
  * @property int payment_method_id
- * @property PaymentMethod payment_method
  * @property float payment_method_price
  *
  * @method static self createdToday()
@@ -74,8 +65,7 @@ use Illuminate\Support\Facades\Route;
  */
 class Client extends Model implements Accountable, CanHaveShipment
 {
-    use SoftDeletes, HasAttachmentsTrait;
-    use PrepareAccounting, ClientAccounting, StatisticsTrait;
+
     use Notifiable;
 
     protected $dates = ['deleted_at'];
@@ -121,7 +111,6 @@ class Client extends Model implements Accountable, CanHaveShipment
         parent::boot();
 
         static::created(function (self $client) {
-            $client->notify(new ClientCreated());
         });
 
         static::deleting(function(self $instance) {
@@ -261,7 +250,6 @@ class Client extends Model implements Accountable, CanHaveShipment
 
     public function zone()
     {
-        return $this->belongsTo(Zone::class);
     }
 
     public function pickups()
@@ -271,12 +259,10 @@ class Client extends Model implements Accountable, CanHaveShipment
 
     public function paymentMethod()
     {
-        return $this->belongsTo(PaymentMethod::class);
     }
 
     public function chargedFor()
     {
-        return $this->hasMany(ClientChargedFor::class);
     }
 
     public function chargedForStatuses()
@@ -290,7 +276,6 @@ class Client extends Model implements Accountable, CanHaveShipment
 
     public function limits()
     {
-        return $this->hasMany(ClientLimit::class, 'client_account_number', 'account_number');
     }
 
 
@@ -309,7 +294,6 @@ class Client extends Model implements Accountable, CanHaveShipment
 
     public function customZones()
     {
-        return $this->hasMany(CustomZone::class);
     }
 
     public function customAddresses()
