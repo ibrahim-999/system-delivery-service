@@ -3,6 +3,13 @@
 namespace App\Models;
 
 
+use App\Interfaces\Accountable;
+use App\Interfaces\CanHaveShipment;
+use App\Notifications\ClientCreated;
+use App\Traits\ClientAccounting;
+use App\Traits\StatisticsTrait;
+use App\Traits\HasAttachmentsTrait;
+use App\Traits\PrepareAccounting;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -23,6 +30,7 @@ use Illuminate\Support\Facades\Route;
  * @property string|array secondary_emails
  *
  * @property User user
+ * @property Zone zone
  *
  * @property string category
  * @property string sector
@@ -57,6 +65,7 @@ use Illuminate\Support\Facades\Route;
  *
  * @property Collection attachments
  * @property int payment_method_id
+ * @property PaymentMethod payment_method
  * @property float payment_method_price
  *
  * @method static self createdToday()
@@ -65,7 +74,8 @@ use Illuminate\Support\Facades\Route;
  */
 class Client extends Model implements Accountable, CanHaveShipment
 {
-
+    use SoftDeletes, HasAttachmentsTrait;
+    use PrepareAccounting, ClientAccounting, StatisticsTrait;
     use Notifiable;
 
     protected $dates = ['deleted_at'];
@@ -111,6 +121,7 @@ class Client extends Model implements Accountable, CanHaveShipment
         parent::boot();
 
         static::created(function (self $client) {
+            $client->notify(new ClientCreated());
         });
 
         static::deleting(function(self $instance) {
@@ -250,6 +261,7 @@ class Client extends Model implements Accountable, CanHaveShipment
 
     public function zone()
     {
+        return $this->belongsTo(Zone::class);
     }
 
     public function pickups()
@@ -259,10 +271,12 @@ class Client extends Model implements Accountable, CanHaveShipment
 
     public function paymentMethod()
     {
+        return $this->belongsTo(PaymentMethod::class);
     }
 
     public function chargedFor()
     {
+        return $this->hasMany(ClientChargedFor::class);
     }
 
     public function chargedForStatuses()
@@ -276,6 +290,7 @@ class Client extends Model implements Accountable, CanHaveShipment
 
     public function limits()
     {
+        return $this->hasMany(ClientLimit::class, 'client_account_number', 'account_number');
     }
 
 
@@ -294,6 +309,7 @@ class Client extends Model implements Accountable, CanHaveShipment
 
     public function customZones()
     {
+        return $this->hasMany(CustomZone::class);
     }
 
     public function customAddresses()
@@ -384,5 +400,34 @@ class Client extends Model implements Accountable, CanHaveShipment
 
     public static function routes()
     {
+        Route::get('clients/create', "ClientsController@create")->name('clients.create');
+        Route::get('clients/{client}/edit/{section?}', "ClientsController@edit")->name('clients.edit');
+        Route::resource('clients', "ClientsController")->except(['show', 'create', 'edit']);
+
+        // clients custom services
+        Route::get('clients/{client}/services', "ClientServicesController@index")->name('clients.services.index');
+        Route::post('clients/{client}/services/{service}', "ClientServicesController@store")->name('clients.services.store');
+        Route::put('clients/{client}/services/{service}', "ClientServicesController@update")->name('clients.services.update');
+
+        // clients custom zones
+        Route::post('clients/{client}/zones', "ClientZonesController@store")->name('clients.zones.store');
+        Route::get('clients/{client}/zones', "ClientZonesController@index")->name('clients.zones.index');
+        Route::get('clients/{client}/zones/{zone}', "ClientZonesController@show")->name('clients.zones.show');
+        Route::put('clients/{client}/zones/{zone}', "ClientZonesController@update")->name('clients.zones.update');
+        Route::delete('clients/{client}/zones/{zone}', "ClientZonesController@destroy")->name('clients.zones.destroy');
+
+        // clients custom addresses
+        Route::put('clients/{client}/addresses/{address}', "CustomAddressesController@update")->name('clients.addresses.update');
+        Route::post('clients/{client}/addresses', "CustomAddressesController@store")->name('clients.addresses.store');
+        Route::post('clients/{client}/addresses/bulk', "CustomAddressesController@bulk")->name('clients.addresses.bulk');
+        Route::get('clients/{client}/zones/{zone}/addresses', "CustomAddressesController@index")->name('clients.addresses.index');
+        Route::delete('clients/{client}/addresses', "CustomAddressesController@bulkDestroy")->name('clients.addresses.bulkDestroy');
+        Route::delete('clients/{client}/addresses/{address}', "CustomAddressesController@destroy")->name('clients.addresses.destroy');
+
+        // clients tabs
+        Route::get('clients/{client}/{tab?}', "ClientsController@show")
+            ->name('clients.show')
+            ->where('tab', 'statistics|shipments|pickups');
+
     }
 }
