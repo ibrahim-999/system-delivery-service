@@ -684,6 +684,21 @@ class Shipment extends Model
 
     public static function routes()
     {
+        Route::put('shipments/{shipment}/recalculate', "ShipmentController@recalculate")->name('shipments.recalculate');
+        Route::put('shipments/assign-courier', "ShipmentController@assignCourier")->name('shipments.assignCourier');
+        Route::get('shipments/returned', "ShipmentController@returned")->name('shipments.returned');
+        Route::get('shipments/create/{type?}', "ShipmentController@create")
+            ->name('shipments.create')
+            ->where('type', 'wizard|legacy');
+        Route::get('shipments/{shipment}/{tab?}', "ShipmentController@show")
+            ->name('shipments.show')
+            ->where('tab', 'summery|details|actions|status|changelog');
+        Route::resource('shipments', "ShipmentController")->except(['create', 'show']);
+
+        Route::put('shipments/{shipment}/return', "ShipmentController@makeReturn")->name('shipments.return');
+        Route::put('shipments/{shipment}/delivery', "ShipmentController@updateDelivery")->name('shipments.delivery');
+
+        Route::get('shipments/{shipment}/print', "ShipmentController@print")->name('shipments.print');
     }
 
 }
