@@ -11,6 +11,9 @@
 |
 */
 
+use App\Models\Courier;
+use App\Models\Pickup;
+
 Route::get('/', 'HomeController@index');
 
 Auth::routes();
