@@ -30,7 +30,6 @@ use Illuminate\Support\Facades\Route;
 class User extends Authenticatable
 {
     use Notifiable;
-    use HasUserRoutes;
 
     /**
      * The attributes that are mass assignable.

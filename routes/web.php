@@ -25,8 +25,3 @@ Courier::routes();
 Pickup::routes();
 
 
-Route::get('suggest/shipments', "Api\SuggestController@shipments");
-
-
-Route::get('suggest/couriers', "Api\SuggestController@couriers");
-
