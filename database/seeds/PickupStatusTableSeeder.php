@@ -3,7 +3,7 @@
 use App\Models\PickupStatus;
 use Illuminate\Database\Seeder;
 
-class PickupStatusesSeeder extends Seeder
+class PickupStatusTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.

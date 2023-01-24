@@ -5,7 +5,6 @@ use Illuminate\Database\Seeder;
 
 class PaymentMethodsSeeder extends Seeder
 {
-
     private $paymentMethods = [
         'cash',
         'bank_deposit',
@@ -14,7 +13,6 @@ class PaymentMethodsSeeder extends Seeder
         'zain_cash',
         'cash_from_office'
     ];
-
     /**
      * Run the database seeds.
      *
