@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddShipmentPiecesField extends Migration
+class CreateServicesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,12 @@ class AddShipmentPiecesField extends Migration
      */
     public function up()
     {
-        Schema::table('shipments', function (Blueprint $table) {
-            $table->integer('pieces');
+        Schema::create('services', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->double('price');
+            $table->softDeletes();
+            $table->timestamps();
         });
     }
 
@@ -25,8 +29,6 @@ class AddShipmentPiecesField extends Migration
      */
     public function down()
     {
-        Schema::table('shipments', function (Blueprint $table) {
-            $table->dropColumn('pieces');
-        });
+        Schema::dropIfExists('services');
     }
 }

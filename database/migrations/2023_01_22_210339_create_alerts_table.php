@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddStatusNoteToPickups extends Migration
+class CreateAlertsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,12 @@ class AddStatusNoteToPickups extends Migration
      */
     public function up()
     {
-        Schema::table('pickups', function (Blueprint $table) {
-            $table->string('status_note')->nullable();
+        Schema::create('alerts', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('type');
+            $table->string('url');
+            $table->boolean('is_read')->default(false);
+            $table->timestamps();
         });
     }
 
@@ -25,8 +29,6 @@ class AddStatusNoteToPickups extends Migration
      */
     public function down()
     {
-        Schema::table('pickups', function (Blueprint $table) {
-            $table->dropColumn('status_note');
-        });
+        Schema::dropIfExists('alerts');
     }
 }
