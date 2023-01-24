@@ -26,8 +26,8 @@ class UsersTableSeeder extends Seeder
     public function rootUser($template)
     {
         $rootUser                 = new User;
-        $rootUser->username       = "root";
-        $rootUser->email          = "himoath@gmail.com";
+        $rootUser->username       = "admin";
+        $rootUser->email          = "saloodo@admin.com";
         $rootUser->password       = Hash::make('123456');
         $rootUser->remember_token = str_random(10);
         $rootUser->template()->associate($template);
