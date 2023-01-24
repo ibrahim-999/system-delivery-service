@@ -21,8 +21,10 @@ use App\Models\Note;
 use App\Models\Pickup;
 use App\Models\Service;
 use App\Models\Shipment;
-use App\Models\User;
 use App\Models\Zone;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'HomeController@index');
 
@@ -84,6 +86,3 @@ Route::middleware('auth')->group(function () {
     });
 
 });
-
-
-
