@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddShipmentPiecesField extends Migration
+class PaymentMethodPriceDefaultValInClients extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddShipmentPiecesField extends Migration
      */
     public function up()
     {
-        Schema::table('shipments', function (Blueprint $table) {
-            $table->integer('pieces');
+        Schema::table('clients', function (Blueprint $table) {
+            $table->float('payment_method_price')->default(0)->change();
         });
     }
 
@@ -25,8 +25,8 @@ class AddShipmentPiecesField extends Migration
      */
     public function down()
     {
-        Schema::table('shipments', function (Blueprint $table) {
-            $table->dropColumn('pieces');
+        Schema::table('clients', function (Blueprint $table) {
+            //
         });
     }
 }
