@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Client;
-use App\ClientChargedFor;
-use App\ClientLimit;
 use App\Http\Requests\StoreClientRequest;
+use App\Models\ClientChargedFor;
+use App\Models\ClientLimit;
 use App\Models\PaymentMethod;
 use App\Models\PickupStatus;
 use App\Models\Shipment;

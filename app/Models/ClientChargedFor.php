@@ -39,7 +39,7 @@ class ClientChargedFor extends Model
         return $this->belongsTo(Status::class);
     }
 
-    public function scopeByStatus(Builder $builder, $statusName)
+    public function scopeByStatus(Builder $builder, $statusName): Builder
     {
         if($statusName === "returned")
             $statusId = -1;

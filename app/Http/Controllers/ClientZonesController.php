@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Client;
-use App\CustomZone;
+use App\Models\CustomZone;
 use App\Models\Zone;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
