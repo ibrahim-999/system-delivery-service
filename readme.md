@@ -66,7 +66,7 @@ $ php artisan serve
 - phpunit
 
 ## How to access the admin panel
-- admin panel (saloodo@admin.com, password:-123456).
+- admin panel (user:-admin, password:-123456).
 
 
 ## Applications Routes
