@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Client;
 use App\Models\Courier;
-use App\Inventory;
+use App\Models\Inventory;
 use App\Models\Shipment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
