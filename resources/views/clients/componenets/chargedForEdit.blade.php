@@ -1,6 +1,6 @@
-@php /** @var App\Client $client */
+@php /** @var App\Models\Client $client */
 
-/** @var \App\ClientChargedFor $cf */
+/** @var \App\Models\ClientChargedFor $cf */
 $cf = isset($client) && !is_null($client) ? $client->chargedFor()->byStatus($status)->first() : null;
 
 if(!is_null($cf)) {
@@ -51,18 +51,7 @@ if(!is_null($cf)) {
     </div>
     @if($status == 'returned')
         <div class="form-group pl-3">
-            <div class="custom-control custom-checkbox">
-                <input type="checkbox" id="charged_{{ $status }}_rejected" name="chargedFor[{{ $status }}][rejected]"
-                       class="custom-control-input" {{ $data['returnedChargeOn']['rejected'] ? 'checked' : "" }}>
-                <label for="charged_{{ $status }}_rejected"
-                       class="custom-control-label">Charged if the original rejected</label>
-            </div>
-            <div class="custom-control custom-checkbox">
-                <input type="checkbox" id="charged_{{ $status }}_cancelled" name="chargedFor[{{ $status }}][cancelled]"
-                       class="custom-control-input" {{ $data['returnedChargeOn']['cancelled'] ? 'checked' : "" }}>
-                <label for="charged_{{ $status }}_cancelled"
-                       class="custom-control-label">Charged if the original cancelled</label>
-            </div>
+
         </div>
     @endif
 </fieldset>
